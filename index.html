@@ -95,7 +95,7 @@
         scroll.style.fontSize = app.renderer.height;
         console.log(scroll.x);
         scroll.text = inputText;
-        scroll.x -= 7 * delta;
+        scroll.x -= app.renderer.width * .015 * delta;
         if (scroll.x + scroll.width <= 0) scroll.x = app.renderer.width;
       });
     }
