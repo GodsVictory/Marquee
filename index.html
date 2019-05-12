@@ -1,11 +1,151 @@
 <html>
+
 <head>
   <title>BlabrBox</title>
-  <link rel="shortcut icon" href="favicon.ico"/>
+  <link rel="shortcut icon" href="favicon.ico" />
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=.1, user-scalable=no">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.5.1/pixi.min.js"></script>
+  <script>
+
+    var cursorTimeout, inputTimeout, input, lastGrow, last;
+    window.onload = function start() {
+      // The application will create a renderer using WebGL, if possible,
+      // with a fallback to a canvas render. It will also setup the ticker
+      // and the root stage PIXI.Container
+      PIXI.settings.GC_MODE = 'manual';
+      PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
+      app = new PIXI.Application(window.innerWidth, window.innerHeight, {
+        backgroundColor: 0x000000,
+        antialias: false,
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        crossOrigin: true
+      });
+
+
+      // The application will create a canvas element for you that you
+      // can then insert into the DOM
+      document.body.appendChild(app.view);
+
+      var style = new PIXI.TextStyle({
+        fontFamily: 'Arial',
+        fontSize: 200,
+        align: 'center',
+        fill: '#ffffff',
+        stroke: '#000000',
+        strokeThickness: 2,
+      });
+      var scrollStyle = new PIXI.TextStyle({
+        fontFamily: 'Arial',
+        fontSize: 48,
+        align: 'center',
+        fill: '#ffffff',
+        stroke: '#000000',
+        strokeThickness: 2,
+      });
+
+      input = new PIXI.Text("input", style);
+      input.anchor.set(.5);
+      input.scale.x = 0;
+      input.scale.y = 0;
+      input.grow = false;
+      input.x = app.renderer.width / 2;
+      input.y = app.renderer.height / 2;
+      app.stage.addChild(input);
+
+      scroll = new PIXI.Text("", scrollStyle);
+      scroll.anchor.set(0, .5);
+      scroll.x = app.renderer.width / 2;
+      scroll.y = app.renderer.height / 2;
+      app.stage.addChild(scroll);
+
+
+      app.ticker.add(function (delta) {
+        if (document.hidden) return;
+        document.getElementById('channel').focus();
+        var inputText = document.getElementById('channel').value;
+        if (input.text.length > 0 && input.text != inputText) {
+          input.grow = true;
+          last = Date.now();
+        }
+
+        if (inputText.length == 0) input.text = "input";
+        else input.text = inputText;
+
+        if (inputText.length > 0 && Date.now() - last >= 2000) input.grow = false;
+        lastGrow = input.grow;
+
+        growSpeed = (app.renderer.width * app.renderer.height) * .000000075;
+        decaySpeed = growSpeed * .0015;
+
+        // INPUT HANDLER
+        if (input.grow && input.text.length > 0) {
+          if (input.width < app.renderer.width * .45)
+            input.scale.x = input.scale.y += growSpeed * 5 * delta;
+          else if (input.width > app.renderer.width * .55)
+            input.scale.x = input.scale.y -= growSpeed * 5 * delta;
+        } else
+          if (input.scale.x > 0)
+            input.scale.x = input.scale.y -= growSpeed * 3 * delta;
+          else
+            input.scale.x = input.scale.y = 0;
+
+
+        scroll.style.fontSize = app.renderer.height;
+        console.log(scroll.x);
+        scroll.text = inputText;
+        scroll.x -= 7 * delta;
+        if (scroll.x + scroll.width <= 0) scroll.x = app.renderer.width;
+      });
+    }
+    window.onresize = function () {
+      app.renderer.resize(window.innerWidth, window.innerHeight);
+      input.x = app.renderer.width / 2;
+      input.y = app.renderer.height / 2;
+    }
+    document.onmousemove = function () {
+      document.getElementById('channel').style.cursor = 'default';
+      clearTimeout(cursorTimeout);
+      cursorTimeout = setTimeout(function () {
+        document.getElementById('channel').style.cursor = 'none';
+      }, 1000);
+    }
+    document.onclick = function () {
+      input.grow = true;
+    }
+
+
+  </script>
+  <style>
+    /* do not group these rules */
+    *::-webkit-input-placeholder {
+      color: white;
+    }
+
+    *:-moz-placeholder {
+      /* FF 4-18 */
+      color: white;
+    }
+
+    *::-moz-placeholder {
+      /* FF 19+ */
+      color: white;
+    }
+
+    *:-ms-input-placeholder {
+      /* IE 10+ */
+      color: white;
+    }
+  </style>
+
 </head>
 
-<body style="background-color: black;position: absolute;top: 0px;left: 0px;width: 100%;height: 100%;padding: 0px;margin: 0px;overflow: hidden;">
-  <input id="channel" type="text" name="lname" onclick="var val = this.value;this.value = '';this.value = val;" style="color: transparent;background-color: black;opacity: 0;position: absolute;top: 0px;left: 0px;width: 100%;height: 100%;padding: 0px;margin: 0px;overflow: hidden; text-align: center;border: none;outline: none;">
-asdf</body>
+<body
+  style="background-color: black;position: absolute;top: 0px;left: 0px;width: 100%;height: 100%;padding: 0px;margin: 0px;overflow: hidden;">
+  <input id="channel" type="text" name="lname" onclick="var val = this.value;this.value = '';this.value = val;"
+    style="color: transparent;background-color: black;opacity: 0;position: absolute;top: 0px;left: 0px;width: 100%;height: 100%;padding: 0px;margin: 0px;overflow: hidden; text-align: center;border: none;outline: none;">
+
+</body>
+
 </html>
