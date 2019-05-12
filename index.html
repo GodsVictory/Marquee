@@ -83,7 +83,7 @@
         if (input.grow && input.text.length > 0) {
           if (input.width < app.renderer.width * .45)
             input.scale.x = input.scale.y += growSpeed * 5 * delta;
-          else if (input.width > app.renderer.width * .55)
+          else if (input.width > app.renderer.width * .65)
             input.scale.x = input.scale.y -= growSpeed * 5 * delta;
         } else
           if (input.scale.x > 0)
@@ -95,8 +95,9 @@
         scroll.style.fontSize = app.renderer.height;
         console.log(scroll.x);
         scroll.text = inputText;
-        scroll.x -= app.renderer.width * .015 * delta;
+        scroll.x -= 10 * delta;
         if (scroll.x + scroll.width <= 0) scroll.x = app.renderer.width;
+        scroll.y = app.renderer.height / 2;
       });
     }
     window.onresize = function () {
