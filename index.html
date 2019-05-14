@@ -1,7 +1,7 @@
 <html>
 
 <head>
-  <title>BlabrBox</title>
+  <title>Marquee</title>
   <link rel="shortcut icon" href="favicon.ico" />
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=.1, user-scalable=no">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.5.1/pixi.min.js"></script>
@@ -79,7 +79,7 @@
 
         // INPUT HANDLER
         if (input.grow && input.text.length > 0) {
-          if (input.width < app.renderer.width * .45)
+          if (input.width < app.renderer.width * .45 && input.height < app.renderer.height * .9)
             input.scale.x = input.scale.y += growSpeed * delta;
           else if (input.width > app.renderer.width * .65)
             input.scale.x = input.scale.y -= growSpeed * delta;
@@ -88,9 +88,6 @@
             input.scale.x = input.scale.y -= growSpeed * delta;
           else
             input.scale.x = input.scale.y = 0;
-            
-            console.log(input.scale.x);
-            
             
           if (scroll.height < app.renderer.height * .85)
             scroll.scale.x = scroll.scale.y += growSpeed * delta;
