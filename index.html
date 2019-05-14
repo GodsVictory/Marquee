@@ -75,7 +75,7 @@
         if (inputText.length > 0 && Date.now() - last >= 2000) input.grow = false;
         lastGrow = input.grow;
 
-        growSpeed = .1;
+        growSpeed = app.renderer.height * .5 / 60;
 
         // INPUT HANDLER
         if (input.grow && input.text.length > 0) {
