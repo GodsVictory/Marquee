@@ -95,7 +95,7 @@
             scroll.scale.x = scroll.scale.y -= growSpeed * delta;
             
         scroll.text = inputText;
-        scroll.x -= 13 * delta;
+        scroll.x -= app.renderer.width * .5 / 60 * delta;
         if (scroll.x + scroll.width <= 0) scroll.x = app.renderer.width;
         scroll.y = app.renderer.height / 2;
       });
