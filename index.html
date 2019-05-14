@@ -59,6 +59,13 @@
       scroll.x = app.renderer.width / 2;
       scroll.y = app.renderer.height / 2;
       app.stage.addChild(scroll);
+      
+      
+      scroll2 = new PIXI.Text("", scrollStyle);
+      scroll2.anchor.set(0, .5);
+      scroll2.x = app.renderer.width / 2;
+      scroll2.y = app.renderer.height / 2;
+      app.stage.addChild(scroll2);
 
 
       app.ticker.add(function (delta) {
@@ -96,14 +103,15 @@
           else if (scroll.height > app.renderer.height * .95)
             scroll.scale.x = scroll.scale.y -= growSpeed * delta;
             
-            console.log(scroll.scale.x);
-
-
-        //scroll.style.fontSize = app.renderer.height;
-        scroll.text = inputText;
+        scroll2.scale = scroll.scale;
+            
+        scroll.text = scroll2.text = inputText;
         scroll.x -= 13 * delta;
+        scroll2.x -= 13 * delta;
+        if (scroll2.x + scroll2.width <= 0)
+          scroll2.x = scroll.x + scroll.width + app.renderer.width * .3;
         if (scroll.x + scroll.width <= 0) scroll.x = app.renderer.width;
-        scroll.y = app.renderer.height / 2;
+        scroll.y = scroll2.y = app.renderer.height / 2;
       });
     }
     window.onresize = function () {
