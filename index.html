@@ -38,7 +38,7 @@
       });
       var scrollStyle = new PIXI.TextStyle({
         fontFamily: 'Arial',
-        fontSize: 48,
+        fontSize: 64,
         align: 'center',
         fill: '#ffffff',
         stroke: '#000000',
@@ -76,23 +76,30 @@
         if (inputText.length > 0 && Date.now() - last >= 2000) input.grow = false;
         lastGrow = input.grow;
 
-        growSpeed = (app.renderer.width * app.renderer.height) * .0000000035;
-        decaySpeed = growSpeed * .0015;
+        growSpeed = .1;
 
         // INPUT HANDLER
         if (input.grow && input.text.length > 0) {
           if (input.width < app.renderer.width * .45)
-            input.scale.x = input.scale.y += growSpeed * 5 * delta;
+            input.scale.x = input.scale.y += growSpeed * delta;
           else if (input.width > app.renderer.width * .65)
-            input.scale.x = input.scale.y -= growSpeed * 5 * delta;
+            input.scale.x = input.scale.y -= growSpeed * delta;
         } else
           if (input.scale.x > 0)
-            input.scale.x = input.scale.y -= growSpeed * 3 * delta;
+            input.scale.x = input.scale.y -= growSpeed * delta;
           else
             input.scale.x = input.scale.y = 0;
+            
+            
+          if (scroll.height < app.renderer.height * .85)
+            scroll.scale.x = scroll.scale.y += growSpeed * delta;
+          else if (scroll.height > app.renderer.height * .95)
+            scroll.scale.x = scroll.scale.y -= growSpeed * delta;
+            
+            console.log(scroll.scale.x);
 
 
-        scroll.style.fontSize = app.renderer.height;
+        //scroll.style.fontSize = app.renderer.height;
         scroll.text = inputText;
         scroll.x -= 13 * delta;
         if (scroll.x + scroll.width <= 0) scroll.x = app.renderer.width;
